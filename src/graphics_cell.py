@@ -41,7 +41,7 @@ class GraphicsCell(BaseCell):
         return cells_name
 
     def run(self):
-        print('build  graphics cell')
+        pass
 
 
 class GraphicsCellReference(BaseCell):
