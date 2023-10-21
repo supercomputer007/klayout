@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from PySide6.QtWidgets import QGraphicsRectItem, QGraphicsTextItem, QGraphicsLineItem, QGraphicsPolygonItem
+from PySide6.QtWidgets import QGraphicsRectItem, QGraphicsPolygonItem, QAbstractGraphicsShapeItem
 from .pen_brush import PenBrush
 
 
@@ -113,7 +113,7 @@ class GraphicsPolygonSet(object):
         return bbox
 
     @abstractmethod
-    def get_graphics_item(self, pen_brush: PenBrush):
+    def get_graphics_item(self, pen_brush: PenBrush) -> QAbstractGraphicsShapeItem:
         pass
 
 
@@ -131,15 +131,14 @@ class GraphicsPolygon(GraphicsPolygonSet):
                 return False
         return True
 
-    def get_graphics_item(self, pen_brush: PenBrush):
-        if self.graphics_item is None:
-            pen, brush = pen_brush.get_pen_brush(self.layer_id)
-            if self.is_rectangle:
-                self.graphics_item = GraphicsRectItem(self.bbox[0], -self.bbox[3], self.width, self.height)
-            else:
-                self.graphics_item = GraphicsPolygonItem(self.point_list)
-            self.graphics_item.setPen(pen)
-            self.graphics_item.setBrush(brush)
-            self.graphics_item.layer_id = self.layer_id
-            self.graphics_item.polygon_instance = self
+    def get_graphics_item(self, pen_brush: PenBrush) -> QAbstractGraphicsShapeItem:
+        pen, brush = pen_brush.get_pen_brush(self.layer_id)
+        if self.is_rectangle:
+            self.graphics_item = GraphicsRectItem(self.bbox[0], -self.bbox[3], self.width, self.height)
+        else:
+            self.graphics_item = GraphicsPolygonItem(self.point_list)
+        self.graphics_item.setPen(pen)
+        self.graphics_item.setBrush(brush)
+        self.graphics_item.layer_id = self.layer_id
+        self.graphics_item.polygon_instance = self
         return self.graphics_item

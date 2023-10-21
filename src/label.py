@@ -18,14 +18,13 @@ class GraphicsLabel(object):
         self.text_item = None
 
     def get_text_item(self, pen_brush):
-        if not self.text_item:
-            font = pen_brush.get_text_font()
-            self.text_item = GraphicsTextItem(self.text)
-            self.text_item.setFont(font)
-            self.text_item.setPos(self.x - self.text_item.boundingRect().width() / 2,
-                                  -self.y - self.text_item.boundingRect().height() / 2)
-            self.text_item.layer_id = self.layer_id
-            self.text_item.text_instance = self
+        font = pen_brush.get_text_font()
+        self.text_item = GraphicsTextItem(self.text)
+        self.text_item.setFont(font)
+        self.text_item.setPos(self.x - self.text_item.boundingRect().width() / 2,
+                              -self.y - self.text_item.boundingRect().height() / 2)
+        self.text_item.layer_id = self.layer_id
+        self.text_item.text_instance = self
         return self.text_item
 
 

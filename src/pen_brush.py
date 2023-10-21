@@ -21,6 +21,7 @@ class PenBrush(object):
         self.colors_index = 0
         self.layer_to_color = {}
         self.layer_to_pen_brush = {}
+        self.cell_bbox_pen = None
 
     def get_color(self, layer_id):
 
@@ -49,3 +50,9 @@ class PenBrush(object):
         font = QFont()
         font.setPointSize(size)
         return font
+
+    def get_cell_bbox_pen(self):
+        if self.cell_bbox_pen is None:
+            pen = QPen(Qt.GlobalColor.red, 2)
+            self.cell_bbox_pen = pen
+        return self.cell_bbox_pen

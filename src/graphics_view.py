@@ -35,7 +35,7 @@ class GraphicsView(QGraphicsView):
         width = layout_scene.width()
         height = layout_scene.height()
         if width > height:
-            scale = (self.width() / width)
+            scale = (self.width()/width)
         else:
             scale = (self.height() / height)
         self.scale(scale, scale)
