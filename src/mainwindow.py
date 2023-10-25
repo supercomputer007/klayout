@@ -72,13 +72,9 @@ class MainWindow(QtWidgets.QMainWindow):
             self.selected_cells.clear()
         else:
             self.selected_cells = [model_index]
-        # select_item:QStandardItem = self.cells_item_model.item(item.row(), item.column())
-        # self.ui.listViewCells.setCurrentIndex()
-        # self.ui.listViewCells.setCurrentIndex(QModelIndex())
-        # self.ui.listViewCells.clearSelection()
-        print()
-        # current_index = self.ui.listViewCells.currentIndex()
-        # self.ui.listViewCells.setCurrentIndex(current_index)
+        self.graphics_scene.hide_all_cells_bbox()
+        if self.selected_cells:
+            self.graphics_scene.show_cell_bbox(self.selected_cells[0].data())
 
     def on_double_clicked_view_cell(self, model_index):
         next_cells = [ref.ref_cell for ref in self.graphics_cell.references if ref.name == model_index.data()]
@@ -88,11 +84,12 @@ class MainWindow(QtWidgets.QMainWindow):
             self.cell_stack.append(next_cells[0])
             self.refresh_graphics()
 
-        print()
-
     def on_selected_cell_changed(self, selected):
         if len(self.ui.listViewCells.selectedIndexes()) > 1:
             self.selected_cells = self.ui.listViewCells.selectedIndexes()
+            self.graphics_scene.hide_all_cells_bbox()
+            for idx_model in self.selected_cells:
+                self.graphics_scene.show_cell_bbox(idx_model.data())
 
     def on_clicked_layer_cell(self, item):
         select_item = self.layers_item_model.item(item.row(), item.column())

@@ -20,6 +20,7 @@ class GraphicsScene(QGraphicsScene):
         self.bbox = []
         self.cell_bbox_items = {}
         self.cell_name_items = {}
+        self.z_value = 0
 
     def reset_scene(self):
         self.clear()
@@ -35,16 +36,28 @@ class GraphicsScene(QGraphicsScene):
         self.graphics_cell = graphics_cell
 
     def show_polygons_by_layer(self, layer_id):
+        z_value = self.z_value
         for item in self.shape_items.get(layer_id, []):
+            item.setZValue(z_value)
             item.show()
+        self.z_value += 1
 
     def hide_polygons_by_layer(self, layer_id):
         for item in self.shape_items.get(layer_id, []):
             item.hide()
 
     def show_labels_by_layer(self, layer_id):
+        z_value = self.z_value
         for item in self.label_items.get(layer_id, []):
+            item.setZValue(z_value)
             item.show()
+        self.z_value += 1
+
+    def show_cell_bbox(self, cell_name):
+        self.cell_bbox_items[cell_name].show()
+
+    def hide_cell_bbox(self, cell_name):
+        self.cell_bbox_items[cell_name].hide()
 
     def hide_labels_by_layer(self, layer_id):
         for item in self.label_items.get(layer_id, []):
@@ -76,19 +89,19 @@ class GraphicsScene(QGraphicsScene):
             for item in items:
                 item.hide()
 
-    def show_cell_bbox(self):
+    def show_all_cells_bbox(self):
         for item in self.cell_bbox_items.values():
             item.show()
 
-    def hide_cell_bbox(self):
+    def hide_all_cells_bbox(self):
         for item in self.cell_bbox_items.values():
             item.hide()
 
-    def show_cell_name(self):
+    def show_all_cells_name(self):
         for item in self.cell_name_items.values():
             item.show()
 
-    def hide_cell_name(self):
+    def hide_all_cells_name(self):
         for item in self.cell_name_items.values():
             item.hide()
 
@@ -96,11 +109,11 @@ class GraphicsScene(QGraphicsScene):
         if ShowMode.SelectMode == ShowMode.Detail:
             self.show_polygons()
             self.show_labels()
-            self.hide_cell_bbox()
-            self.hide_cell_name()
+            self.hide_all_cells_bbox()
+            self.hide_all_cells_name()
         else:
-            self.show_cell_bbox()
-            self.show_cell_name()
+            self.show_all_cells_bbox()
+            self.show_all_cells_name()
             self.hide_polygons()
             self.hide_labels()
 
