@@ -33,15 +33,11 @@ class GraphicsCell(BaseCell):
         self.labels = labels
         self.bbox = self.get_bbox(self.polygons)
         self.references: List[GraphicsCellReference] = []
-        self.run()
 
     def get_all_reference_cell_name(self):
         cells_name = [ref_cell.name for ref_cell in self.references]
         cells_name.sort()
         return cells_name
-
-    def run(self):
-        pass
 
 
 class GraphicsCellReference(BaseCell):
@@ -54,7 +50,3 @@ class GraphicsCellReference(BaseCell):
         self.labels = labels
         self.bbox = self.get_bbox(self.polygons)
         self.ref_cell: Cell = gds_cell_reference.ref_cell
-        self.run()
-
-    def run(self):
-        print('build  graphics cell reference')

@@ -18,9 +18,10 @@ class GraphicsView(QGraphicsView):
         self.zoom_out = 1.0 / 1.2
         self.setViewportUpdateMode(QGraphicsView.ViewportUpdateMode.FullViewportUpdate)
 
-    def resize_rectangle_pen_width(self):
+    def resize_shape_pen_width(self):
         pen_width = int(self.mapToScene(0, 0, 1, 1)[2].x() - self.mapToScene(0, 0, 1, 1)[0].x())
-        for item in [item for item in self.scene().items() if item.type() == GraphicType.Rectangle]:
+        shape_types = [GraphicType.Rectangle, GraphicType.Polygon]
+        for item in [item for item in self.scene().items() if item.type() in shape_types]:
             pen = QPen(item.pen().color(), pen_width)
             item.setPen(pen)
 
@@ -39,7 +40,7 @@ class GraphicsView(QGraphicsView):
         else:
             scale = (self.height() / height)
         self.scale(scale, scale)
-        self.resize_rectangle_pen_width()
+        self.resize_shape_pen_width()
         self.resize_line_pen_width()
 
     def keyPressEvent(self, event):
@@ -58,5 +59,5 @@ class GraphicsView(QGraphicsView):
             else:
                 self.scale(self.zoom_out, self.zoom_out)
             self.update()
-            self.resize_rectangle_pen_width()
+            self.resize_shape_pen_width()
             self.resize_line_pen_width()

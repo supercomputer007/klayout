@@ -1,10 +1,13 @@
 from abc import ABC, abstractmethod
 from PySide6.QtWidgets import QGraphicsRectItem, QGraphicsPolygonItem, QAbstractGraphicsShapeItem
 from .pen_brush import PenBrush
+from PySide6.QtGui import QPolygonF
+from PySide6.QtCore import QPointF
 
 
 class GraphicType(object):
     Rectangle = 3
+    Polygon = 5
     Text = 8
     Line = 6
 
@@ -136,7 +139,8 @@ class GraphicsPolygon(GraphicsPolygonSet):
         if self.is_rectangle:
             self.graphics_item = GraphicsRectItem(self.bbox[0], -self.bbox[3], self.width, self.height)
         else:
-            self.graphics_item = GraphicsPolygonItem(self.point_list)
+            polygon = QPolygonF([QPointF(point[0], -point[1]) for point in self.point_list])
+            self.graphics_item = GraphicsPolygonItem(polygon)
         self.graphics_item.setPen(pen)
         self.graphics_item.setBrush(brush)
         self.graphics_item.layer_id = self.layer_id
